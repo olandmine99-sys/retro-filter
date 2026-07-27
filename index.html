@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レトロゲーム風フィルター ＆ サムネジェネレーター</title>
-    <!-- Google Fontsから日本語のドット絵フォントを読み込み -->
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         body {
@@ -26,7 +25,6 @@
         h1 { font-size: 20px; color: #444; }
         .controls { margin: 15px 0; }
         
-        /* テキスト入力エリアの装飾 */
         .text-tool {
             background-color: #e9ecef;
             padding: 15px;
@@ -44,11 +42,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
-        input[type="color"] {
-            cursor: pointer;
-            height: 35px;
-            border: none;
-        }
+        input[type="color"] { cursor: pointer; height: 35px; border: none; }
 
         button {
             padding: 10px 15px;
@@ -71,6 +65,36 @@
             border-radius: 4px;
             margin-top: 10px;
             image-rendering: pixelated; 
+            display: none; /* 最初は非表示 */
+        }
+
+        /* ローディング演出のスタイル */
+        #loading {
+            display: none;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 24px;
+            color: #e74c3c;
+            margin: 30px 0;
+            animation: blink 1s infinite; /* 1秒間隔で点滅 */
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* 広告スペースのスタイル */
+        .ad-space {
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ccc;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -93,6 +117,14 @@
         <button id="btnGBC" disabled>GBC風 (16色)</button>
     </div>
 
+    <!-- ここに楽天アフィリエイトのコードを貼り付けます -->
+    <div class="ad-space">
+        <table border="0" cellpadding="0" cellspacing="0"><tr><td><div style="border:1px solid #95a5a6;border-radius:.75rem;background-color:#FFFFFF;width:504px;margin:0px;padding:5px;text-align:center;overflow:hidden;"><table><tr><td style="width:240px"><a href="https://hb.afl.rakuten.co.jp/ichiba/5619c15a.0a8151bc.5619c15b.16a6b853/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnetbaby%2F5702017816616%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><img src="https://hbb.afl.rakuten.co.jp/hgb/5619c15a.0a8151bc.5619c15b.16a6b853/?me_id=1212232&item_id=10051052&pc=https%3A%2F%2Fthumbnail.image.rakuten.co.jp%2F%400_mall%2Fnetbaby%2Fcabinet%2F616%2F5702017816616.jpg%3F_ex%3D240x240&s=240x240&t=picttext" border="0" style="margin:2px" alt="[商品価格に関しましては、リンクが作成された時点と現時点で情報が変更されている場合がございます。]" title="[商品価格に関しましては、リンクが作成された時点と現時点で情報が変更されている場合がございます。]"></a></td><td style="vertical-align:top;width:248px;display: block;"><p style="font-size:12px;line-height:1.4em;text-align:left;margin:0px;padding:2px 6px;word-wrap:break-word"><a href="https://hb.afl.rakuten.co.jp/ichiba/5619c15a.0a8151bc.5619c15b.16a6b853/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnetbaby%2F5702017816616%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;">レゴ(LEGO) Game Boy 72046(1個)【レゴ(LEGO)】[おもちゃ 玩具 プレゼント インテリア おしゃれ]</a><br><span >価格：8,350円（税込、送料無料)</span> <span style="color:#BBB">(2026/7/27時点)</span></p><div style="margin:10px;"><a href="https://hb.afl.rakuten.co.jp/ichiba/5619c15a.0a8151bc.5619c15b.16a6b853/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnetbaby%2F5702017816616%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><img src="https://static.affiliate.rakuten.co.jp/makelink/rl.svg" style="float:left;max-height:27px;width:auto;margin-top:0" ></a><a href="https://hb.afl.rakuten.co.jp/ichiba/5619c15a.0a8151bc.5619c15b.16a6b853/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fnetbaby%2F5702017816616%2F%3Fscid%3Daf_pc_bbtn&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ==" target="_blank" rel="nofollow sponsored noopener" style="word-wrap:break-word;"><div style="float:right;width:41%;height:27px;background-color:#bf0000;color:#fff!important;font-size:12px;font-weight:500;line-height:27px;margin-left:1px;padding: 0 12px;border-radius:16px;cursor:pointer;text-align:center;"> 楽天で購入 </div></a></div></td></tr></table></div><br><p style="color:#000000;font-size:12px;line-height:1.4em;margin:5px;word-wrap:break-word"></p></td></tr></table>
+    </div>
+
+    <!-- ローディング文字 -->
+    <div id="loading">画像をAI（？）で解析・変換中...</div>
+
     <canvas id="canvas"></canvas>
     
     <div class="controls">
@@ -107,6 +139,7 @@
     const btnRedraw = document.getElementById('btnRedraw');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const loading = document.getElementById('loading');
     
     const btnGB = document.getElementById('btnGB');
     const btnVB = document.getElementById('btnVB');
@@ -114,7 +147,7 @@
     const btnDownload = document.getElementById('btnDownload');
 
     let originalImage = new Image();
-    let currentPalette = null; // 現在選択されているカラーパレットを記憶
+    let currentPalette = null;
 
     const palettes = {
         GB: [[15, 56, 15], [48, 98, 48], [139, 172, 15], [155, 188, 15]],
@@ -134,23 +167,33 @@
         const reader = new FileReader();
         reader.onload = function(event) {
             originalImage.onload = function() {
-                // UIの有効化
                 btnGB.disabled = false; btnVB.disabled = false; btnGBC.disabled = false;
                 textInput.disabled = false; textColor.disabled = false; btnRedraw.disabled = false;
-                
                 currentPalette = palettes.GB;
-                processImage(); 
+                triggerProcess(); 
             }
             originalImage.src = event.target.result;
         }
         reader.readAsDataURL(file);
     });
 
-    // 各ボタンの処理（パレットをセットして画像処理を実行）
-    btnGB.addEventListener('click', () => { currentPalette = palettes.GB; processImage(); });
-    btnVB.addEventListener('click', () => { currentPalette = palettes.VB; processImage(); });
-    btnGBC.addEventListener('click', () => { currentPalette = palettes.GBC; processImage(); });
-    btnRedraw.addEventListener('click', () => { if(currentPalette) processImage(); });
+    btnGB.addEventListener('click', () => { currentPalette = palettes.GB; triggerProcess(); });
+    btnVB.addEventListener('click', () => { currentPalette = palettes.VB; triggerProcess(); });
+    btnGBC.addEventListener('click', () => { currentPalette = palettes.GBC; triggerProcess(); });
+    btnRedraw.addEventListener('click', () => { if(currentPalette) triggerProcess(); });
+
+    // ローディングを挟むための関数
+    function triggerProcess() {
+        // 画像とダウンロードボタンを隠し、ローディングを表示
+        canvas.style.display = 'none';
+        btnDownload.style.display = 'none';
+        loading.style.display = 'block';
+
+        // 2000ミリ秒（2秒）後に実際の処理を実行
+        setTimeout(() => {
+            processImage();
+        }, 2000);
+    }
 
     function processImage() {
         if (!originalImage.src || !currentPalette) return;
@@ -163,7 +206,6 @@
         const outputScale = outputWidth / originalImage.width;
         const outputHeight = Math.floor(originalImage.height * outputScale);
 
-        // 裏側でドット化と色変換
         const offCanvas = document.createElement('canvas');
         offCanvas.width = retroWidth;
         offCanvas.height = retroHeight;
@@ -182,36 +224,32 @@
         }
         offCtx.putImageData(imageData, 0, 0);
 
-        // メインキャンバスにニアレストネイバー法で拡大描画
         canvas.width = outputWidth;
         canvas.height = outputHeight;
         ctx.imageSmoothingEnabled = false; 
         ctx.drawImage(offCanvas, 0, 0, retroWidth, retroHeight, 0, 0, outputWidth, outputHeight);
         
-        // --- ★ここからテキスト描画処理 ---
         const text = textInput.value;
         if (text) {
-            // 文字サイズを画像の幅に合わせて動的に調整（横幅の10%程度）
             const fontSize = Math.floor(outputWidth * 0.08); 
             ctx.font = `${fontSize}px 'DotGothic16', sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-            
-            // テキストの配置位置（中央下部）
             const textX = outputWidth / 2;
             const textY = outputHeight - (outputHeight * 0.05);
 
-            // 1. 黒いフチ取りを描画（サムネイル特有の視認性確保）
             ctx.strokeStyle = '#000000';
-            ctx.lineWidth = Math.floor(fontSize * 0.15); // フチの太さも動的
+            ctx.lineWidth = Math.floor(fontSize * 0.15);
             ctx.lineJoin = 'round';
             ctx.strokeText(text, textX, textY);
 
-            // 2. メインの文字色を描画
             ctx.fillStyle = textColor.value;
             ctx.fillText(text, textX, textY);
         }
 
+        // 処理が終わったらローディングを消して、画像とボタンを表示
+        loading.style.display = 'none';
+        canvas.style.display = 'block';
         btnDownload.style.display = 'inline-block';
     }
 
