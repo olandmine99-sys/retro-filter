@@ -128,7 +128,14 @@
     <canvas id="canvas"></canvas>
     
     <div class="controls">
+      <div class="controls">
         <button id="btnDownload" style="background-color: #28a745; display: none;">画像をダウンロード</button>
+    </div>
+
+    <!-- 追加：シェアボタンのエリア（最初は非表示） -->
+    <div class="controls" id="shareControls" style="display: none;">
+        <button id="btnShareX" style="background-color: #000000; color: #ffffff;">𝕏 でシェアする</button>
+    </div>
     </div>
 </div>
 
@@ -271,6 +278,29 @@
         link.download = 'retro_thumbnail.png';
         link.href = canvas.toDataURL();
         link.click();
+        // シェアボタンの取得
+    const shareControls = document.getElementById('shareControls');
+    const btnShareX = document.getElementById('btnShareX');
+
+    // ★ processImage() 関数の最後でシェアボタンを表示させるための修正
+    // processImage 関数の中にある btnDownload.style.display = 'inline-block'; のすぐ下に、
+    // shareControls.style.display = 'block'; を追記してください。（すでに追記する場合は上書きでOKです）
+    // 処理が終わったらローディングを消して、画像とボタンを表示
+        loading.style.display = 'none';
+        canvas.style.display = 'block';
+        btnDownload.style.display = 'inline-block';
+        shareControls.style.display = 'block'; // ←これを追加
+
+    // X（Twitter）シェアボタンの動作
+    btnShareX.addEventListener('click', () => {
+        // シェアするテキストとURLをエンコード（文字化け防止）
+        const shareText = encodeURIComponent("レトロゲーム風フィルターで遊ぶ\n#レトロフィルター\n");
+        // 現在のページのURLを自動的に取得してシェアURLに設定します
+        const shareUrl = encodeURIComponent(window.location.href);
+        
+        // Xの投稿画面を新しいタブで開く
+        window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
+    });
     });
 </script>
 
